@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="ProductsApp.Mobile.Views.ProductListPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:ProductsApp.Mobile.ViewModels"
+    xmlns:dto="clr-namespace:ProductsApp.Shared.Dtos;assembly=ProductsApp.Shared"
+    x:DataType="viewModels:ProductListViewModel"
+    Title="Products"
+    BackgroundColor="#0F172A">
+
+    <Grid RowDefinitions="Auto,Auto,*" Padding="18,18,18,10">
+        <VerticalStackLayout Spacing="6">
+            <Label
+                FontAttributes="Bold"
+                FontSize="30"
+                Text="Products App"
+                TextColor="White" />
+
+            <Label
+                FontSize="14"
+                Text="Modern .NET MAUI + API demo"
+                TextColor="#94A3B8" />
+        </VerticalStackLayout>
+
+        <Grid
+            Grid.Row="1"
+            ColumnDefinitions="*,*"
+            ColumnSpacing="12"
+            Margin="0,20,0,16">
+            <Button
+                Grid.Column="0"
+                BackgroundColor="#2563EB"
+                Command="{Binding LoadProductsCommand}"
+                CornerRadius="16"
+                FontAttributes="Bold"
+                HeightRequest="52"
+                Text="Refresh"
+                TextColor="White" />
+
+            <Button
+                Grid.Column="1"
+                BackgroundColor="#10B981"
+                Command="{Binding GoToAddPageCommand}"
+                CornerRadius="16"
+                FontAttributes="Bold"
+                HeightRequest="52"
+                Text="Add Product"
+                TextColor="White" />
+        </Grid>
+
+        <CollectionView
+            Grid.Row="2"
+            ItemsSource="{Binding Products}"
+            SelectionMode="None">
+            <CollectionView.EmptyView>
+                <VerticalStackLayout Padding="20" Spacing="10">
+                    <Label
+                        HorizontalOptions="Center"
+                        FontSize="22"
+                        Text="No products yet"
+                        TextColor="White" />
+                    <Label
+                        HorizontalOptions="Center"
+                        FontSize="14"
+                        Text="Tap Refresh or Add Product"
+                        TextColor="#94A3B8" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="dto:ProductDto">
+                    <Border
+                        Margin="0,0,0,14"
+                        Padding="16"
+                        BackgroundColor="#1E293B"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 24">
+                        <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,Auto">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="20"
+                                Text="{Binding Name}"
+                                TextColor="White" />
+
+                            <Border
+                                Grid.Column="1"
+                                Padding="10,5"
+                                BackgroundColor="#0EA5E9"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 14">
+                                <Label
+                                    FontAttributes="Bold"
+                                    Text="{Binding Quantity, StringFormat='Qty: {0}'}"
+                                    TextColor="White" />
+                            </Border>
+
+                            <Label
+                                Grid.Row="1"
+                                Margin="0,14,0,0"
+                                FontSize="16"
+                                Text="{Binding Price, StringFormat='$ {0:F2}'}"
+                                TextColor="#38BDF8" />
+
+                            <Button
+                                Grid.Row="2"
+                                Grid.ColumnSpan="2"
+                                Margin="0,16,0,0"
+                                Padding="0"
+                                BackgroundColor="#EF4444"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:ProductListViewModel}}, Path=DeleteProductCommand}"
+                                CommandParameter="{Binding .}"
+                                CornerRadius="14"
+                                HeightRequest="44"
+                                Text="Delete"
+                                TextColor="White" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>
